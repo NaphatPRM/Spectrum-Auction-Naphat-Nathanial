@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 import org.json.simple.parser.ParseException;
 
@@ -19,19 +20,41 @@ import brown.user.agent.library.AbsLSVM18Agent;
 import brown.user.agent.library.OnlineAgentBackend;
 
 public class MyLSVM18Agent extends AbsLSVM18Agent implements IAgent {
-	private final static String NAME = ""; // TODO: give your agent a name.
-
+	private final static String NAME = "ABC"; // TODO: give your agent a name.
 	public MyLSVM18Agent(String name) {
 		super(name);
 		// TODO: fill this in (if necessary)
-
 	}
 	
 	@Override
 	protected Map<String, Double> getBids(Map<String, Double> minBids) {
 		// TODO: fill this in
-		
-		return null;
+		Map<String, Double> returnBid = new HashMap<String, Double>();
+		for (String g: minBids.keySet()) {
+			Set<String> cart = new HashSet<String>();
+			cart.add(g);
+			returnBid.put(g, this.getValuation(cart));
+		}
+
+		for (int i = 0; i < 500; i++) {
+			//IBidVector b = bInit.copy();
+			
+			for (String gi : minBids.keySet()) {
+				// TODO: calculate the marginal value of gi, and update b with it (b.setBid(...)).
+				// use MarginalValues.calcMarginalValue (your implementation!)
+				double MV = calcMarginalValue(minBids.keySet(), gi, returnBid, minBids);
+				returnBid.put(gi, MV);
+			}
+			
+			// TODO (optional): test for convergence between bInit and b.
+			
+			// TODO: update bInit.
+			
+			// Print out the latest bid vector.
+			System.out.println(returnBid);
+		}
+		//System.out.println(bInit);
+		return returnBid;
 	}
 
 	@Override
@@ -47,6 +70,23 @@ public class MyLSVM18Agent extends AbsLSVM18Agent implements IAgent {
 
 	}
 
+	public double calcMarginalValue(Set<String> G, String good, Map<String, Double> b, Map<String, Double> p) {
+		// TODO: fill this in
+		Set<String> cart = new HashSet<String>();
+		for (String g: G) {
+			if (!g.equals(good)) {
+				double price = p.get(g);
+				double bid = b.get(g);
+				if (bid > price) {
+					cart.add(good);
+				}
+			}
+		}
+		double back = this.getValuation(cart);
+		cart.add(good);
+		double front = this.getValuation(cart);
+		return front - back;
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 		if (args.length == 0) {
