@@ -1,0 +1,33 @@
+{
+	"agents": [
+		{
+			"agentClass": "agent.MyLSVM18Agent", 
+			"agentName": "me", 
+		}, 
+		{
+			"agentClass": "brown.user.agent.library.Tier1LSVM18Agent", 
+			"agentName": "opponent_1", 
+
+		},
+		{
+			"agentClass": "brown.user.agent.library.Tier1LSVM18Agent", 
+			"agentName": "opponent_2", 
+
+		},
+		{
+			"agentClass": "brown.user.agent.library.Tier1LSVM18Agent", 
+			"agentName": "opponent_3", 
+
+		},
+		{
+			"agentClass": "brown.user.agent.library.Tier1LSVM18Agent", 
+			"agentName": "opponent_4", 
+
+		},
+		{
+			"agentClass": "brown.user.agent.library.Tier1LSVM18Agent", 
+			"agentName": "opponent_5", 
+
+		}
+	]
+}
