@@ -29,31 +29,27 @@ public class MyLSVM18Agent extends AbsLSVM18Agent implements IAgent {
 	@Override
 	protected Map<String, Double> getBids(Map<String, Double> minBids) {
 		// TODO: fill this in
+		System.out.println(minBids);
 		Map<String, Double> returnBid = new HashMap<String, Double>();
-		for (String g: minBids.keySet()) {
+		System.out.println(this.getProximity());
+		for (String g: this.getProximity()) {
 			Set<String> cart = new HashSet<String>();
 			cart.add(g);
-			returnBid.put(g, this.getValuation(cart));
+			returnBid.put(g, 10000.0);//this.getValuation(g));
 		}
 
-		for (int i = 0; i < 500; i++) {
+		for (int i = 0; i < 10; i++) {
 			//IBidVector b = bInit.copy();
 			
-			for (String gi : minBids.keySet()) {
+			for (String gi : this.getProximity()) {
 				// TODO: calculate the marginal value of gi, and update b with it (b.setBid(...)).
 				// use MarginalValues.calcMarginalValue (your implementation!)
-				double MV = calcMarginalValue(minBids.keySet(), gi, returnBid, minBids);
-				returnBid.put(gi, MV);
+				double MV = calcMarginalValue(this.getProximity(), gi, returnBid, minBids);
+				returnBid.put(gi, this.clipBid(gi, MV/(this.getCurrentRound() + 1), minBids));
 			}
-			
-			// TODO (optional): test for convergence between bInit and b.
-			
-			// TODO: update bInit.
-			
-			// Print out the latest bid vector.
-			System.out.println(returnBid);
 		}
 		//System.out.println(bInit);
+		System.out.println(returnBid);
 		return returnBid;
 	}
 
