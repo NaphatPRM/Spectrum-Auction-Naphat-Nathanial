@@ -20,7 +20,7 @@ import brown.user.agent.library.AbsLSVM18Agent;
 import brown.user.agent.library.OnlineAgentBackend;
 
 public class MyLSVM18Agent extends AbsLSVM18Agent implements IAgent {
-	private final static String NAME = "ABC"; // TODO: give your agent a name.
+	private final static String NAME = "NapNat"; // TODO: give your agent a name.
 	public MyLSVM18Agent(String name) {
 		super(name);
 		// TODO: fill this in (if necessary)
@@ -35,7 +35,7 @@ public class MyLSVM18Agent extends AbsLSVM18Agent implements IAgent {
 		for (String g: this.getProximity()) {
 			Set<String> cart = new HashSet<String>();
 			cart.add(g);
-			returnBid.put(g, 10000.0);//this.getValuation(g));
+			returnBid.put(g, 10000.0); //this.getValuation(g));
 		}
 
 		for (int i = 0; i < 10; i++) {
@@ -45,7 +45,7 @@ public class MyLSVM18Agent extends AbsLSVM18Agent implements IAgent {
 				// TODO: calculate the marginal value of gi, and update b with it (b.setBid(...)).
 				// use MarginalValues.calcMarginalValue (your implementation!)
 				double MV = calcMarginalValue(this.getProximity(), gi, returnBid, minBids);
-				returnBid.put(gi, this.clipBid(gi, MV/(this.getCurrentRound() + 1), minBids));
+				returnBid.put(gi, this.clipBid(gi, MV* (this.getCurrentRound() + 1)/(this.getCurrentRound() + 2), minBids));
 			}
 		}
 		//System.out.println(bInit);
